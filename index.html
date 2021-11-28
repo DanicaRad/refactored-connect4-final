@@ -1,0 +1,57 @@
+<!doctype html>
+<head>
+  <title>Connect 4</title>
+  <link href="style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/ouh7cyl.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="heading">
+    <div class="connect-4">
+        Connect Four
+    </div>
+    <div class="tagline">
+        <!-- The  vertical four-in-a-row game you never played as an only child. -->
+        The vertical four-in-a-row game you can finally play by yourself.
+    </div>
+    <div class="form">
+        
+        <form name="" action="" id="game-form">
+            <label class="form-header">
+                Add players or play against bot.
+            </label>
+
+            <div class="form-inputs">
+                <div id="players">
+                    <div id="add-player">Add Player+</div>
+                    <input type="text" id="color1" placeholder="choose your color">
+                </div>
+                <!-- game grid dimensions -->
+                <div id="board-dimensions">
+                    <!-- <div>Change grid dimensions</div> -->
+                    width
+                    <input type="number" id="width" value="7">
+                    height
+                    <input type="number" id="height" value="6">
+                    <!-- <div>game grid dimensions</div> -->
+                </div>
+                <!-- <button id="play">Play!</button> -->
+
+            </div>
+
+                <button id="play">Play!</button>
+        </form>
+    </div>
+</div>
+
+<div id="game">
+  
+  <table id="board"></table>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
