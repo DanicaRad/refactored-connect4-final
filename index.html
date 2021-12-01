@@ -1,52 +1,63 @@
 <!doctype html>
 <head>
   <title>Connect 4</title>
-  <link href="style.css" rel="stylesheet">
+  <link href="new-style.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.typekit.net/ouh7cyl.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700;800;900&display=swap" rel="stylesheet">
 </head>
-<body>
-<div class="heading">
-    <div class="connect-4">
-        Connect Four
-    </div>
-    <div class="tagline">
-        <!-- The  vertical four-in-a-row game you never played as an only child. -->
-        The vertical four-in-a-row game you can finally play by yourself.
-    </div>
-    <div class="form">
-        
-        <form name="" action="" id="game-form">
-            <label class="form-header">
-                Add players or play against bot.
-            </label>
 
-            <div class="form-inputs">
-                <div id="players">
-                    <div id="add-player">Add Player+</div>
-                    <input type="text" id="color1" placeholder="choose your color">
+<body>
+    <div class="header">
+        <div id="connect-4">Connect Four</div>
+        Not the original vertical four-in-a-row game and definitely a copyright infringement.
+    </div>
+
+    <span id="instructions">
+        AGES 6+<br>
+        1- 100 PLAYERS<br>
+        ADULT ASSEMBLY REQUIRED<br>
+    </span>
+        
+    <form id="game-form">
+
+        <div class="form-inputs">
+
+             <div class="flex-column" id="inputs">
+                <div>
+                    Choose checkers color
                 </div>
-                <!-- game grid dimensions -->
-                <div id="board-dimensions">
-                    <!-- <div>Change grid dimensions</div> -->
-                    width
-                    <input type="number" id="width" value="7">
-                    height
-                    <input type="number" id="height" value="6">
-                    <!-- <div>game grid dimensions</div> -->
-                </div>
-                <!-- <button id="play">Play!</button> -->
+
+                <span id="add-player">Add Player+</span>
+                <input type="text" class="player-color" id="color1" placeholder="mystery color!">
 
             </div>
 
-                <button id="play">Play!</button>
-        </form>
-    </div>
-</div>
+            <div class="flex-column">
+                Change grid size
 
+                <div class="flex-row" id="move-btn">
+                    <div class="flex-column">
+                        <span>width</span>
+                        <input type="number" id="width" value="7">
+                    </div>
+
+                    <div class="flex-column">
+                        <span>height</span>
+                        <input type="number" id="height" value="6">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <button id="play">Play the computer!</button>
+
+    </form>
+
+    <div id="next-turn">??</div>
 <div id="game">
+    
   
   <table id="board"></table>
 </div>
