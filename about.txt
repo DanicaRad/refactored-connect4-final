@@ -1,0 +1,40 @@
+/** Connect Four
+ *
+ * Players alternate turns. On each turn, a piece is dropped down a
+ * column until a player gets four-in-a-row (horiz, vert, or diag) or until
+ * board fills (tie)
+ */
+
+It should:
+
+Allow a single player to play the computer
+
+Allow multiple Players
+
+Allow players to choose their checkers colors
+
+Allow the grid dimensions to be changed
+
+Assign a random checkers color to player if input is left blank or the input is not a computed color
+
+Assign a random color to computer checkers
+
+Create html game board with top row to select column to play on click
+
+top row cell should change to current player's checkers color when hovered over and place checkers in that column on click
+
+Each player gets a turn before starting over until there is a win or a tie (the board fills)
+
+If single player, computer should automatically play a random cell next to the previous player's last played cell
+
+Should check for a win or tie after each play 
+
+Should alert on win with player number, based on player's first turn, and winner's checkers color
+
+Should alert on tie
+
+Should reload to game setup page when alert is cleared
+
+
+
+

@@ -9,49 +9,14 @@ class Game {
   constructor(width, height, botPlayer, ...colors) {
     // creates an array of players
     this.players = !botPlayer ? [...colors] : [botPlayer, ...colors];
-    console.log('this.player', this.players);
     this.currPlayer = !botPlayer ? this.players[0] : this.players[1];
     this.botPlayer = botPlayer;
-    //
     this.prevCol = 0;
-    //
     this.width = width;
     this.height = height;
     this.makeBoard();
     this.makeHtmlBoard();
   }
-  
-  makeRandomColor() {
-    return '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
-  }
-
-  changePlayers(player) {
-    let playerIdx = this.players.indexOf(this.currPlayer);
-    if(!this.botPlayer) {
-      console.log('no bot');
-      if(playerIdx === this.players.length -1) {
-        console.log('back to first player');
-        return this.players[0];
-      }
-      console.log('next player');
-      return this.players[playerIdx + 1];
-    }
-    if(player === this.botPlayer) {
-      console.log('bot just played');
-      return this.players[1];
-    }
-    return this.botPlayer;
-  }
-
-//   changePlayers(player) {
-//     let playerIdx = this.players.indexOf(this.currPlayer);
-//     if(playerIdx === this.players.length -1) {
-//       console.log('back to first player');
-//       return this.players[0];
-//     }
-//       console.log('next player');
-//       return this.players[playerIdx + 1];
-//   }
 
   makeBoard() {
     this.board = [];
@@ -63,12 +28,16 @@ class Game {
   makeHtmlBoard() {
     const form = document.getElementById('game-form');
     form.innerHTML = '';
-      const htmlBoard = document.getElementById('board');
+        const htmlBoard = document.getElementById('board');
 
-      const top = document.createElement("tr");
-      top.setAttribute("id", "column-top");
-      this.handleGameClick = this.handleClick.bind(this);
-      top.addEventListener("click", this.handleGameClick);
+        const top = document.createElement("tr");
+        top.setAttribute("id", "column-top");
+        // changes top tr to currPlayer color on mouseover
+        top.addEventListener('mouseover', (e) => {
+            e.target.style.backgroundColor = this.currPlayer.color;
+        }); 
+        this.handleGameClick = this.handleClick.bind(this);
+        top.addEventListener("click", this.handleGameClick);
       
       for (let x = 0; x < this.width; x++) {
          const headCell = document.createElement("td");
@@ -104,9 +73,26 @@ class Game {
       piece.style.backgroundColor = this.currPlayer.color;
       const square = document.getElementById(`${y}-${x}`);
       square.append(piece);
-      console.log('piece from placeInTable', piece);
-      setTimeout(() => piece.classList.add('piece'), 100)
+      setTimeout(() => piece.classList.add('piece'), 10)
     }
+
+    changePlayers(player) {
+        let playerIdx = this.players.indexOf(this.currPlayer);
+        if(!this.botPlayer) {
+          console.log('no bot');
+          if(playerIdx === this.players.length -1) {
+            console.log('back to first player');
+            return this.players[0];
+          }
+          console.log('next player');
+          return this.players[playerIdx + 1];
+        }
+        if(player === this.botPlayer) {
+          console.log('bot just played');
+          return this.players[1];
+        }
+        return this.botPlayer;
+      }
 
     endGame(msg) {
       alert(msg);
@@ -115,12 +101,13 @@ class Game {
 
   handleClick(evt) {
 
+    console.log('winnerName', this.currPlayer.winnerName);
+
     // get x from ID of clicked cell
     let x = parseInt(evt.target.id);
-    //
-    this.prevCol = x;
 
-    let playerIdx = this.players.indexOf(this.currPlayer);
+    // stores clicked cell for playBot()
+    this.prevCol = x;
   
     // get next spot in column (if none, ignore click)
     const y = this.findSpotForCol(x);
@@ -137,69 +124,41 @@ class Game {
   
     // get DOM elements for event listeners for win
     let cell = document.getElementById(`${y}-${x}`);
-    let evtTarget = document.getElementById("column-top");
+    const columnTop = document.getElementById("column-top");
   
     if (this.checkForWin()) {
-      let winner = this.currPlayer.color;
-      evtTarget.removeEventListener('click', this.handleGameClick);
+      let winnerAlert = this.currPlayer.winnerAlert;
+      columnTop.removeEventListener('click', this.handleGameClick);
       cell.addEventListener('animationend', () => {
-        return this.endGame(`The ${winner} player won!`)});
+        return this.endGame(winnerAlert)});
     }
   
     // check for tie
     if (this.board.every(row => row.every(cell => cell))) {
-      return this.endGame('It`s a tie!');
+        cell.addEventListener('animationend', () => {
+            return this.endGame('It`s a tie!')
+        })
     }
 
     // change players
     this.currPlayer = this.changePlayers(this.currPlayer);
-    console.log('currPlayer, x', this.currPlayer, x);
 
-    // change next turn in html
-    // const nextTurn = document.getElementById('next-turn');
-    // const nextPlayer = document.createElement('div');
-    // nextPlayer.innerHTML =  `Next<br>Player`;
-
-    // nextPlayer.style.backgroundColor = this.currPlayer.color;
-    // nextPlayer.classList.add('next-player');
-    // nextTurn.append(nextPlayer);
-    // setTimeout(() => nextPlayer.classList.add('bounced-next-player'), 10);
-
-    const nextTurn = document.getElementById('next-turn');
-    const nextPlayer = document.createElement('div');
-    nextPlayer.innerHTML =  `Next<br>Player`;
-
-    nextPlayer.style.backgroundColor = this.currPlayer.color;
-    nextPlayer.classList.add('next-player');
-    nextTurn.append(nextPlayer);
-    setTimeout(() => nextPlayer.classList.add('bounced-next-player'), 10);
-
-    // nextTurn.style.backgroundColor = this.currPlayer.color;
-
-    //change hover colors in td
-    const columnTop = document.getElementById('column-top');
-    console.log('columnTop', columnTop);
+    //change td hover to currPlayer's color
     columnTop.addEventListener('mouseover', (e) => {
         e.target.style.backgroundColor = this.currPlayer.color;
     });    
 
-
-    // this.playBot();
     this.playBot(this.prevCol);
 
   }
 
-  // checks if it's bot's turn and automates bot click on random column once user play animation is done
+  // checks if it's bot's turn and automates bot click on or next to the column the previous player played to make the game harder
   playBot() {
-      const game = document.getElementById('board')
+    const game = document.getElementById('board')
     game.addEventListener('animationend', () => {
       if(this.currPlayer === this.botPlayer) {
         console.log(`now bot is playing`);
-        console.log('prevCol', this.prevCol);
-        console.log('pickColForBot', this.botPlayer.pickColForBot());
-        // let botX = this.botPlayer.pickColForBot(this.width);
         let botX = this.prevCol + this.botPlayer.pickColForBot();
-        console.log('bot column', botX);
         document.getElementById(botX).click();
       }
       return;
@@ -237,23 +196,26 @@ class Game {
 }
 
 class Player {
-  constructor(color) {
+  constructor(color, num) {
     this.color = color;
+    this.winnerAlert = `Player ${num} (${this.color} checkers) won!`;
   }
 }
 
 class BotPlayer {
   constructor(width) {
-    this.color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+    this.color = makeRandomColor();
+    this.winnerAlert = 'You lost :-(';
   }
 
-//   pickColForBot(width) {
-//     return Math.floor(Math.random() * width);
-//   }
     pickColForBot() {
         return Math.floor(Math.random() * 3) -1;
     }
 }
+
+function makeRandomColor() {
+    return '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+  }
 
 let numOfPlayers = 1;
 
@@ -295,10 +257,11 @@ play.addEventListener('click', (evt) => {
 
       let color = document.getElementById(`color${i}`);
     
+      // check if color input is valid color; if not assign random color
       color.style.backgroundColor = color.value;
-      !color.style.backgroundColor ? playerColors.push(new BotPlayer(width, height, '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'))) :
+      !color.style.backgroundColor ? playerColors.push(new Player(makeRandomColor(), i)) :
 
-      playerColors.push(new Player(color.value));
+      playerColors.push(new Player(color.value, i));
     }
     // checks if single player and creates new game with bot or multiplayers
     numOfPlayers <= 1 ? new Game(width, height, new BotPlayer(width), ...playerColors) : new Game(width, height, null, ...playerColors);

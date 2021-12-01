@@ -4,7 +4,7 @@ html {
 
 body {
     height: 100vp;
-    background: linear-gradient(rgba(0,136,255,80), rgba(62, 220, 248,80));
+    background: linear-gradient(rgba(0,136,255,80), rgba(62, 155, 248,80));
     background-repeat: no-repeat;
     font-family: helvetica;
     font-size: 18px;
@@ -98,7 +98,6 @@ span {
     width: max-content;
     height: max-content;
     font-weight: bold;
-    /* font-size: 16px; */
     color: white;
     background-color: red;
     border: none;
@@ -109,6 +108,7 @@ span {
 
 #play:hover {
     background-color: rgb(250, 101, 101);
+    transition: all .2s ease-out;
 }
 
   
@@ -119,78 +119,7 @@ span {
  justify-content: space-around;
  margin-top: 30px;
 }
-#next-turn {
-    position: absolute;
-    color: white;
-    text-align: center;
-    font-size: 14px;
-}
 
-.next-player {
-    position: absolute;
-    height: 75px;
-    width: 75px;
-    left: -10px;
-    border-radius: 50%;
-    /* transition: ease-in left 1.5s; */
-
-
-    /* animation: 1.5s both spin; */
-
-}
-
-
-#next-turn {
-    position: absolute;
-    color: white;
-    text-align: center;
-    font-size: 14px;
-}
-
-.next-player {
-    position: absolute;
-    height: 75px;
-    width: 75px;
-    left: -10px;
-    border-radius: 50%;
-    /* transition: ease-in left 1.5s; */
-
-
-    /* animation: 1.5s both spin; */
-
-}
-
-@keyframes bounce-in {
-    0% {
-      transform: rotate(0turn);
-    }
-   
-    100% {
-      transform: rotate(1turn);
-    }
- }
-
-div.bounced-next-player {
-    left: 375px;
-    animation: 3s both spin;
-
-    /* position: absolute; */
-    /* animation: .5s forwards bounce-in 3; */
-}
-
-  @keyframes spin {
-    from {
-      /* top: 100px; */
-      /* opacity: 1; */
-      transform: scale(1);
-    }
-    50% {
-      transform: rotate3d(0, 1, 0, 180deg);
-    }
-    to {
-        transform: rotate3d(0, 1, 0, 180deg);
-    }
-  }
   
 #board {
     position: absolute;
@@ -208,15 +137,13 @@ div.bounced-next-player {
 #column-top td {
  border: dotted 3px lightyellow;
  border-collapse: collapse;
- background-color: lightyellow;
  opacity: 0;
 }
   
 #column-top td:hover {
  opacity: 1;
+ transition: all .2s ease-in;
  }
-
-  /* pieces are div within game table cells: draw as colored circles */
   
 div.piece {
  bottom: 1px;
@@ -224,7 +151,6 @@ div.piece {
 }
   
 .played-piece {
-/* TODO: make into circles */
  position: absolute;
  margin: 5px;
  width: 80%;
@@ -269,5 +195,3 @@ div.piece {
  }
   
  }
-  
-
