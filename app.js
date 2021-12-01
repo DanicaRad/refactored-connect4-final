@@ -28,6 +28,14 @@ class Game {
   makeHtmlBoard() {
     const form = document.getElementById('game-form');
     form.innerHTML = '';
+    
+    const newGameBtn = document.createElement('button'); 
+    newGameBtn.innerText = 'Restart Game';
+    newGameBtn.addEventListener('click', () => {
+      location.reload();
+      });
+    form.append(newGameBtn);
+
         const htmlBoard = document.getElementById('board');
 
         const top = document.createElement("tr");

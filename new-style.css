@@ -94,7 +94,7 @@ span {
     gap: 20px;
 }
 
-#play {
+button {
     width: max-content;
     height: max-content;
     font-weight: bold;
@@ -106,7 +106,7 @@ span {
     align-self: flex-end;
 }
 
-#play:hover {
+button:hover {
     background-color: rgb(250, 101, 101);
     transition: all .2s ease-out;
 }
